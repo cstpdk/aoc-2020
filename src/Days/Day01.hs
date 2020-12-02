@@ -2,7 +2,6 @@ module Days.Day01 where
 
 import Data.List (find, sort, tails)
 import Data.Foldable (fold)
-import Debug.Trace
 
 {- Read the file with an int per line and collect into list -}
 readInput :: IO [Int]
