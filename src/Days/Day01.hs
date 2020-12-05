@@ -1,11 +1,10 @@
 module Days.Day01 where
 
-import Data.List (find, sort, tails)
-import Data.Foldable (fold)
+import Data.List (find, tails)
 
 {- Read the file with an int per line and collect into list -}
 readInput :: IO [Int]
-readInput = do 
+readInput = do
   content <- readFile "inputs/day01/1.txt"
   return . fmap read $ lines content
 
@@ -13,11 +12,11 @@ readInput = do
  - Naive solution by exhaustive search, O(n*n!) -}
 findPair :: [Int] -> Maybe (Int, Int)
 findPair ints = find is2020Pair pairs
-    
+
   where pairs :: [(Int, Int)]
         pairs = toPairs [] ints
         toPairs :: [(Int, Int)] -> [Int] ->  [(Int, Int)]
-        toPairs acc (x : xs) = toPairs (acc ++ (zip (repeat x) xs)) xs
+        toPairs acc (x : xs) = toPairs (acc ++ zip (repeat x) xs) xs
         toPairs acc [] = acc
 
 
@@ -25,9 +24,9 @@ findPair ints = find is2020Pair pairs
  - has cubic performance, which is not great -}
 findTriple :: [Int] -> Maybe (Int, Int, Int)
 findTriple ints = find is2020Triple triples
-  where triples :: [(Int, Int, Int)] 
+  where triples :: [(Int, Int, Int)]
         -- I'm surrendering and doing the list comprehension thing
-        triples = [(x, y, z) |  (x : ys) <- tails ints, 
+        triples = [(x, y, z) |  (x : ys) <- tails ints,
                                 (y : zs) <- tails ys,
                                 z <- zs]
 
@@ -39,15 +38,13 @@ is2020Triple (a,b,c) = (a + b + c) == 2020
 
 part1 :: IO ()
 part1 = do
-  is <- readInput 
-  maybe (putStrLn "No result") 
-        (putStrLn . show) 
-        $ fmap (uncurry (*)) $ findPair is
+  is <- readInput
+  maybe (putStrLn "No result") (
+        print . uncurry (*)) (findPair is)
 
 part2 :: IO ()
 part2 = do
-  is <- readInput 
+  is <- readInput
 
-  maybe (putStrLn "No result") 
-        (putStrLn . show) 
-        $ fmap (\(a,b,c) -> a * b * c) $ findTriple is
+  maybe (putStrLn "No result") (
+        print . (\(a,b,c) -> a * b * c)) (findTriple is)
