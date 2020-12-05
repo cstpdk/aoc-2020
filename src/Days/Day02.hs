@@ -41,14 +41,14 @@ mapTuple f (a,b) = (f a, f b)
 
 part1 :: IO ()
 part1 = do
-  content <- readFile "inputs/day02/1.txt"
+  content <- readFile "inputs/day02.txt"
   maybe (putStrLn "No solution :(")
         (print . solveMinMax)
         $ mapM parse (lines content)
 
 part2 :: IO ()
 part2 = do
-  content <- readFile "inputs/day02/1.txt"
+  content <- readFile "inputs/day02.txt"
   maybe (putStrLn "No solution :(")
         (print . solvePosition)
         $ mapM parse (lines content)

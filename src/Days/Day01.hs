@@ -5,7 +5,7 @@ import Data.List (find, tails)
 {- Read the file with an int per line and collect into list -}
 readInput :: IO [Int]
 readInput = do
-  content <- readFile "inputs/day01/1.txt"
+  content <- readFile "inputs/day01.txt"
   return . fmap read $ lines content
 
 {- Find a pair of integers that sum to 2020 in the list
