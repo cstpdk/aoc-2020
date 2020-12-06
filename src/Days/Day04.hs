@@ -5,6 +5,8 @@ import Data.Maybe (isJust)
 import Data.Char (isDigit)
 import Text.Read (readMaybe)
 
+import Util (splitByEmptyLines)
+
 data Unvalidated = Unvalidated {
   byr :: Maybe String, iyr :: Maybe String, eyr :: Maybe String,
   hgt :: Maybe String, hcl :: Maybe String, ecl :: Maybe String,
@@ -23,14 +25,6 @@ parse s =
       g k = strip <$> lookup k kvs
       in Unvalidated  (g "byr") (g "iyr") (g "eyr") (g "hgt")
                       (g "hcl") (g "ecl") (g "pid") (g "cid")
-
-split :: String -> [String]
-split s = build "" [] $ lines s
-  where build :: String -> [String] -> [String] -> [String]
-        build accS accL (x : xs)
-          | x == "" = build "" (accS : accL) xs
-          | otherwise = build (accS ++ " " ++ x) accL xs
-        build accS accL [] = accS : accL
 
 validSimple :: Unvalidated -> Bool
 validSimple u =
@@ -89,9 +83,9 @@ strip = filter (\c -> c /= ':' && c /= ' ')
 part1 :: IO ()
 part1 = do
   content <- readFile "inputs/day04.txt"
-  print . length . filter validSimple $ parse <$> split content
+  print . length . filter validSimple $ parse <$> splitByEmptyLines content
 
 part2 :: IO ()
 part2 = do
   content <- readFile "inputs/day04.txt"
-  print . length . filter validAdvanced $ parse <$> split content
+  print . length . filter validAdvanced $ parse <$> splitByEmptyLines content
